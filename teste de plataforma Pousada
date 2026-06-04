@@ -1,0 +1,281 @@
+<?php
+// index.php – Página inicial da Pousada Barão
+$page_title = 'Início';
+require_once 'includes/header.php';
+
+$quartos   = unserialize(QUARTOS_CONFIG);
+$servicos  = unserialize(SERVICOS);
+$total_quartos = array_sum(array_column($quartos, 'quantidade'));
+?>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero__content">
+    <span class="hero__badge">✨ Centro de Araras – SP</span>
+    <h1>Bem-vindo à<br><?= POUSADA_NOME ?></h1>
+    <p><?= POUSADA_SLOGAN ?>.<br>Café da manhã incluso, Wi-Fi grátis e atendimento dedicado.</p>
+    <div class="hero__actions">
+      <a href="pages/quartos.php" class="btn btn-primary">Ver quartos disponíveis</a>
+      <a href="https://wa.me/<?= POUSADA_WHATSAPP ?>?text=Olá!%20Gostaria%20de%20reservar%20um%20quarto."
+         class="btn btn-wa" target="_blank">📱 Reservar pelo WhatsApp</a>
+    </div>
+    <div class="hero__info">
+      <span class="hero__info-item"><span class="icon">🛏️</span> <?= $total_quartos ?> quartos disponíveis</span>
+      <span class="hero__info-item"><span class="icon">🕐</span> Atendimento: 8h às 22h</span>
+      <span class="hero__info-item"><span class="icon">📍</span> Centro de Araras</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BARRA DE INFORMAÇÕES RÁPIDAS ===== -->
+<div class="info-bar">
+  <div class="info-bar__grid">
+    <div class="info-bar__item">
+      <div class="icon">📍</div>
+      <h4>Endereço</h4>
+      <p><?= POUSADA_ENDERECO ?></p>
+    </div>
+    <div class="info-bar__item">
+      <div class="icon">🕐</div>
+      <h4>Horário de Atendimento</h4>
+      <p><?= POUSADA_HORARIO ?></p>
+    </div>
+    <div class="info-bar__item">
+      <div class="icon">📱</div>
+      <h4>WhatsApp</h4>
+      <p>
+        <a href="https://wa.me/<?= POUSADA_WHATSAPP ?>" target="_blank"
+           style="color:rgba(255,255,255,0.8)">
+          <?= POUSADA_WHATSAPP_EXIBE ?>
+        </a>
+      </p>
+    </div>
+    <div class="info-bar__item">
+      <div class="icon">📸</div>
+      <h4>Instagram</h4>
+      <p>
+        <a href="<?= POUSADA_INSTAGRAM ?>" target="_blank"
+           style="color:rgba(255,255,255,0.8)">@pousada.barao</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SERVIÇOS ===== -->
+<section class="section section--cinza">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label">O que oferecemos</span>
+      <h2 class="section-title">Nossos serviços</h2>
+      <p class="section-sub">Tudo para tornar sua estadia mais confortável e agradável.</p>
+    </div>
+    <div class="services-grid">
+      <?php foreach ($servicos as $s): ?>
+        <div class="service-item">
+          <div class="icon"><?= $s['icon'] ?></div>
+          <p><?= $s['nome'] ?></p>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+
+<!-- ===== QUARTOS – RESUMO ===== -->
+<section class="section">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label">Acomodações</span>
+      <h2 class="section-title">Nossos quartos</h2>
+      <p class="section-sub">Opções para 1 a 8 pessoas. Escolha o ideal para você ou seu grupo.</p>
+    </div>
+    <div class="rooms-grid">
+      <?php foreach ($quartos as $q): ?>
+        <div class="room-card">
+          <div class="room-card__img"><?= $q['emoji'] ?></div>
+          <div class="room-card__body">
+            <div class="room-card__qty">Para <?= $q['label'] ?></div>
+            <div class="room-card__title">Quarto <?= $q['label'] ?></div>
+            <p class="room-card__desc">
+              Wi-Fi, TV e café da manhã inclusos. Banheiro compartilhado.
+              <?= $q['quantidade'] > 1 ? $q['quantidade'] . ' unidades disponíveis.' : '1 unidade disponível.' ?>
+            </p>
+            <div class="room-card__footer">
+              <span class="room-card__badge">🛏️ <?= $q['quantidade'] ?> disponível<?= $q['quantidade'] > 1 ? 'is' : '' ?></span>
+              <a href="https://wa.me/<?= POUSADA_WHATSAPP ?>?text=Olá!%20Quero%20reservar%20um%20quarto%20para%20<?= urlencode($q['label']) ?>."
+                 class="btn btn-primary" target="_blank" style="font-size:0.8rem;padding:0.5rem 1rem">
+                Reservar
+              </a>
+            </div>
+          </div>
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <div class="text-center" style="margin-top:2rem">
+      <a href="pages/quartos.php" class="btn btn-outline">Ver todos os quartos</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LOCALIZAÇÃO ===== -->
+<section class="section section--bege">
+  <div class="container">
+    <div class="text-center">
+      <span class="section-label">Como chegar</span>
+      <h2 class="section-title">Nossa localização</h2>
+      <p class="section-sub">📍 <?= POUSADA_ENDERECO ?></p>
+    </div>
+    <div class="mapa-wrapper">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3685.5!2d-47.3833!3d-22.3572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjLCsDIxJzI1LjkiUyA0N8KwMjMnMDEuOSJX!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Localização da Pousada Barão em Araras – SP">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA FINAL ===== -->
+<section class="section" style="background:var(--verde-escuro);text-align:center;padding:4rem 1.5rem;">
+  <span class="section-label" style="color:var(--verde-claro)">Pronto para sua estadia?</span>
+  <h2 style="color:var(--branco);margin-bottom:1rem">Reserve agora mesmo</h2>
+  <p style="color:rgba(255,255,255,0.75);margin-bottom:2rem">Entre em contato pelo WhatsApp ou preencha nosso formulário de contato.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+    <a href="https://wa.me/<?= POUSADA_WHATSAPP ?>?text=Olá!%20Quero%20fazer%20uma%20reserva." class="btn btn-wa" target="_blank">📱 WhatsApp</a>
+    <a href="pages/contato.php" class="btn btn-outline" style="border-color:var(--bege);color:var(--bege)">✉️ Formulário de contato</a>
+    <a href="<?= POUSADA_INSTAGRAM ?>" class="btn btn-outline" style="border-color:var(--bege);color:var(--bege)" target="_blank">📸 Instagram</a>
+  </div>
+</section>
+
+<?php require_once 'includes/footer.php'; ?>
+
+# Pousada Barão – Guia de Instalação no XAMPP
+## Como rodar o site localmente no seu computador
+
+---
+
+## 1. Pré-requisitos
+- XAMPP instalado (https://www.apachefriends.org/pt_br/index.html)
+- VS Code instalado
+- Navegador (Chrome, Firefox ou Edge)
+
+---
+
+## 2. Estrutura de arquivos do projeto
+
+```
+pousada_barao/
+│
+├── css/
+│   └── style.css              ← Toda a estilização do site
+│
+├── img/
+│   ├── cartao_visita.jpg      ← Cartão de visita / logo da pousada
+│   └── pontos_proximos.png    ← Foto dos pontos próximos
+│
+├── includes/
+│   ├── config.php             ← ⭐ Configurações centrais (edite aqui)
+│   ├── header.php             ← Menu de navegação (aparece em todas as páginas)
+│   └── footer.php             ← Rodapé (aparece em todas as páginas)
+│
+├── pages/
+│   ├── quartos.php            ← Página de quartos e agendamento
+│   ├── atracoes.php           ← Página de atrações próximas
+│   ├── contato.php            ← Formulário de contato
+│   ├── login.php              ← Login de cliente / empresa
+│   ├── cadastro.php           ← Cadastro de cliente / empresa
+│   └── logout.php             ← Encerra a sessão do usuário
+│
+├── index.php                  ← Página inicial (Home)
+│
+├── reservas.txt               ← Criado automaticamente ao receber reservas
+├── mensagens.txt              ← Criado automaticamente ao receber mensagens
+├── usuarios.txt               ← Criado automaticamente ao cadastrar usuários
+│
+└── README.md                  ← Este arquivo
+```
+
+---
+
+## 3. Passo a passo para instalar
+
+### Passo 1 – Abrir o XAMPP
+1. Abra o XAMPP Control Panel
+2. Clique em **Start** no módulo **Apache**
+3. Aguarde aparecer "Running" em verde
+
+### Passo 2 – Copiar o projeto
+1. Abra o Windows Explorer
+2. Navegue até: `C:\xampp\htdocs\`
+3. Cole a pasta **pousada_barao** inteira dentro de `htdocs`
+
+O resultado deve ser: `C:\xampp\htdocs\pousada_barao\`
+
+### Passo 3 – Abrir no navegador
+1. Abra o Chrome ou Firefox
+2. Digite na barra de endereço: `http://localhost/pousada_barao/`
+3. O site vai abrir!
+
+### Passo 4 – Editar no VS Code
+1. Abra o VS Code
+2. Clique em **File → Open Folder**
+3. Selecione a pasta `C:\xampp\htdocs\pousada_barao\`
+4. Edite qualquer arquivo e salve — as mudanças aparecem ao recarregar o navegador
+
+---
+
+## 4. Como personalizar
+
+### Alterar dados da pousada
+Abra o arquivo `includes/config.php` e edite as linhas com `define(...)`:
+
+```php
+define('POUSADA_NOME',      'Pousada Barão');          // Nome do site
+define('POUSADA_WHATSAPP',  '5519996544617');           // Número do WhatsApp
+define('POUSADA_TELEFONE',  '(19) 3352-7705');          // Telefone fixo
+define('POUSADA_HORARIO',   'Segunda a Domingo: 8h às 22h'); // Horário
+```
+
+### Adicionar novas fotos
+1. Coloque suas fotos na pasta `img/`
+2. Referencie no código assim:
+   ```html
+   <img src="/pousada_barao/img/nome_da_foto.jpg" alt="Descrição">
+   ```
+
+---
+
+## 5. Páginas do site
+
+| Endereço no navegador                               | Página           |
+|-----------------------------------------------------|------------------|
+| `http://localhost/pousada_barao/`                   | Home             |
+| `http://localhost/pousada_barao/pages/quartos.php`  | Quartos          |
+| `http://localhost/pousada_barao/pages/atracoes.php` | Atrações         |
+| `http://localhost/pousada_barao/pages/contato.php`  | Contato          |
+| `http://localhost/pousada_barao/pages/login.php`    | Login            |
+| `http://localhost/pousada_barao/pages/cadastro.php` | Cadastro         |
+
+---
+
+## 6. Tecnologias utilizadas
+
+- **PHP** – Linguagem de programação do servidor
+- **HTML5** – Estrutura das páginas
+- **CSS3** – Estilização e responsividade
+- **XAMPP** – Servidor local Apache + PHP
+- **VS Code** – Editor de código
+
+---
+
+## 7. Observações para o professor
+
+- O projeto **não usa JavaScript** (conforme solicitado)
+- O login e cadastro usam **sessões PHP** (`$_SESSION`)
+- Os dados são salvos em **arquivos .txt** (sem banco de dados)
+- O formulário de contato usa a função **`mail()`** do PHP
+- O site é **responsivo** (funciona no celular e no computador) usando somente CSS
+- Todas as informações centrais estão em **`includes/config.php`** (princípio DRY)
+
+---
+
+*Desenvolvido com PHP + XAMPP | Pousada Barão – Araras, SP*
